@@ -1,19 +1,19 @@
 from table import Table
-
+from typing import List
 
 class Db:
 
     group: str 
     description: str
-    tables: list = []
+    tables: List[Table] = []
 
     def __init__(self) -> None:
         pass
 
-    def setGroup(self, group) -> None:
+    def setGroup(self, group: str) -> None:
         self.group = "group: "+group
 
-    def setDesctiption(self, description) -> None:
+    def setDesctiption(self, description: str) -> None:
         self.description = "description: "+description
 
     def addTable(self, tab: list) -> None:
@@ -25,5 +25,5 @@ class Db:
         print(self.description)
 
         for items in self.tables:
-            print(items.attributs)
+            print(items.attribute)
             print(*items.tuples, sep='\n')
