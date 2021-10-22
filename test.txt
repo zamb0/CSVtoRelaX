@@ -1,0 +1,33 @@
+group: UIBK - R, S, T
+description: Tables from and for the lecture [Databases: Foundations, Data Models and System Concepts - University of Innsbruck](http://dbis-informatik.uibk.ac.at/249-0-VO-Datenbanksysteme.html) chapter 3 
+category@de:Universität Innsbruck
+category@en:University of Innsbruck
+
+R = {
+a, b, c
+
+1, 'a', 'd'
+3, 'c', 'c'
+4, 'd', 'f'
+5, 'd', 'b'
+6, 'e', 'f'
+}
+
+S = {
+b, d
+
+'a', 100
+'b', 300
+'c', 400
+'d', 200
+'e', 150
+}
+
+T = {
+b, d
+
+'a', 100
+'d', 200
+'f', 400
+'g', 120
+}
