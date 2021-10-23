@@ -1,57 +1,56 @@
-# Fabio Zamboni & Davide Ferrari
-# elaboratore file csv
-# per il mitico Ferretti
-
-
-## TODO
-## command line interface
-## parsing of csv file
-## print to a txt file
-## NULL management
-
-import csv
-from db import Db
-from table import Table
 import argparse
+import csv
+from os import listdir
+from os.path import isfile, join, basename
 
-db: Db = Db()
+from table import Table
 
-def loadFile(filename: str) -> list:
-    tmp: list = []
 
-    with open(filename, newline='') as csvfile:
+def file_to_table(file_path: str) -> Table:
+    table: Table = Table()
+    table.name = basename(file_path).split(".")[0]
+    with open(file_path) as csv_file:
+        rows = [row for row in csv.reader(csv_file)]
+        table.attributes = rows[0]
+        table.tuples = rows[1:]
+    return table
 
-        spamreader = csv.reader(csvfile)
 
-        for row in spamreader:
-            #addQuotesToString(0, row) #<-----------   add Quotes to String element
-            tmp.append(', '.join(row))
+def format_table(table: Table) -> str:
+    return f"{table.name} = {{\n" \
+           + ", ".join(table.attributes) \
+           + "\n\n" \
+           + "\n".join(", ".join(map(format_tuple, tuple)) for tuple in table.tuples) \
+           + "\n}\n"
 
-    return tmp
 
-def elabFile(table: list) -> Table:
-    i: int = 0
-    t: Table = Table() 
+def format_tuple(value: str) -> str:
+    if value.lower() == "null":
+        return "null"
+    elif value.isnumeric():
+        return value
+    else:
+        return f"'{value}'"
 
-    for items in table:
-        if(i==0):
-            t.setAttributes(items)
-            i=1
-        else:
-            t.addTuple(items)
-    return t
 
-def addQuotesToString(i: int, row: str) -> None:
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description='Converts CSV files to RelaX Dataset.')
+    parser.add_argument('-i', metavar='dir_path', required=True, dest='input', help='The directory with CSV files')
+    parser.add_argument('-o', metavar='out_file', required=True, dest='output', help='Path of the output file')
+    parser.add_argument('-g', metavar='name_of_group', dest='group', help='Name of the RelaX Dataset Group')
+    parser.add_argument('-d', metavar='desc', dest='desc', help='RelaX Dataset Group description')
 
-    i=0
-    for string in row:
-        if(string.isnumeric()):
-            pass
-        else:
-            row[i]="'"+string+"'"
-        i+=1
+    args = parser.parse_args()
 
-db.addTable(elabFile(loadFile("RelazioniAlgebra/spedizioni.csv")))
-db.setGroup("Ciao")
-db.setDesctiption("Test")
-#db.getDb()
+    files_path = [join(args.input, file) for file in listdir(args.input) if isfile(join(args.input, file))]
+    tables = [file_to_table(file) for file in files_path]
+    formatted_rels = [format_table(table) for table in tables]
+
+    with open(args.output, 'w') as output_file:
+        output = "group: " \
+                 + (f"{args.group}" if args.group is not None else basename(args.output).split(".")[0]) \
+                 + "\n" \
+                 + (f"description: {args.desc}\n" if args.desc is not None else "") \
+                 + "\n" \
+                 + "\n".join(formatted_rels)
+        output_file.write(output)

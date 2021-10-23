@@ -2,9 +2,10 @@ from typing import List
 
 
 class Table:
-    
-    tuples: List[List[str]] = []
-    attribute: List[str] = []
+
+    name: str
+    tuples: list = []
+    attributes: list = []
 
     def __init__(self):
         pass
@@ -15,6 +16,6 @@ class Table:
 
     def setAttributes(self, row: list) -> None:
 
-        self.attribute=row
+        self.attributes=row
 
 
