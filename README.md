@@ -9,6 +9,8 @@ python3 main.py -i dir_path -o out_file [-g name_of_group] [-d desc]
 
 ## Arguments:
 
+| Argument          | Description                     |
+| ---               | ---                             |
 |  -h, --help       | show this help message and exit |
 |  -i dir_path      | The directory with CSV files    |
 |  -o out_file      | Path of the output file         |
