@@ -3,7 +3,11 @@ import csv
 from os import listdir
 from os.path import isfile, join, basename
 
-from table import Table
+
+class Table:
+    name: str
+    tuples: list = []
+    attributes: list = []
 
 
 def file_to_table(file_path: str) -> Table:
