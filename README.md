@@ -2,6 +2,8 @@
 
 convert CSV file to readable RelaX format
 
+[how to import](HOW_TO_IMPORT.md) your db in [RelaX](https://dbis-uibk.github.io/relax/calc/local/uibk/local/3)
+
 ## Usage
 ```
 python3 main.py -i dir_path -o out_file [-g name_of_group] [-d desc]
